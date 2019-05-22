@@ -156,8 +156,6 @@ class MediaCard extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.data);
-
     return (
       <div>
         <Card className={classes.card}>
@@ -165,9 +163,7 @@ class MediaCard extends Component {
 
           <CardContent>
             {/* <Form /> */}
-            <div className={classes.root}>
-             
-        </Card>
+            <div className={classes.root}>    
         {this.state.data.map((item, i) => {
           return (
             <div>
@@ -252,12 +248,17 @@ class MediaCard extends Component {
                   Delete
                 </Button>
               </List>
+            
             </div>
           );
+
         })}
       </div>
+      </CardContent>
+      </Card>
+      </div>
     );
-  }
+}
 }
 
 MediaCard.propTypes = {

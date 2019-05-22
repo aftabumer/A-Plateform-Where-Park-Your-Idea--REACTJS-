@@ -17,35 +17,38 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import classNames from "classnames";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputBase from "@material-ui/core/InputBase";
 // import purple from '@material-ui/core/colors/purple';
 // import Form from "./Form";
+import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
   card: {
-
     margin: "0 auto",
-    marginTop: "7%",
-    marginBottom: "7%",
-    marginLeft: "20%",
-    marginRight: "20%",
+    margin: "5% 20% 5% 20%",
     padding: "5px 10px",
     maxWidth: "100%",
     color: "purple",
-
-
-  },
-
-  ideaby: {
-    marginLeft: "60%",
-
+    boxShadow: theme.shadows[8]
+    //   outline: "none",
+    //   width: 'auto',
+    //   display: "flex",
+    //   flexWrap: "wrap",
+    //   flex:'33%',
+    //   float: 'left',
+    //   width: '33.33%',
+    //   padding: '5px',
+    //   content: "",
+    // clear: 'both',
+    // display: 'table',
   },
 
   description: {
-
     marginBottom: "10%",
     border: "solid",
     borderWidth: "1px"
-
   },
 
   button: {
@@ -55,8 +58,9 @@ const styles = theme => ({
     display: "none"
   },
   root: {
-    display: "flex",
-    flexWrap: "wrap"
+    display: "inline",
+    flexWrap: "wrap",
+    flexGrow: 1
     // width: "100%",
     // maxWidth: 360,
     // // backgroundColor: theme.palette.background.paper
@@ -79,8 +83,40 @@ const styles = theme => ({
   },
   avatar: {
     margin: 10
+  },
+  style: {
+    // marginLeft:'40px',
+    textAlign: "center",
+    // fontWeight:'500',
+    // fontSize: "Helvetica Bold",
+    // fontFamily: "Open Sans Regular"
+    font: "small-caps bold 24px/1 sans-serif"
+  },
+
+  margin: {
+    margin: theme.spacing.unit
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit
+  },
+
+  menu: {
+    width: 200
+  },
+  paper: {
+    height: 140,
+    width: 100
+  },
+  control: {
+    padding: theme.spacing.unit * 2
   }
 });
+
 const theme = createMuiTheme({
   palette: {
     primary: purple
@@ -92,88 +128,117 @@ class MediaCard extends Component {
     name: "",
     title: "",
     description: "",
-    ideas: []
+    ideas: [],
+    spacing: "16"
   };
 
+  handleChange = key => (event, value) => {
+    this.setState({
+      [key]: value
+    });
+  };
 
   componentDidMount() {
-    this.handleOnClick()
+    this.handleOnClick();
   }
 
   handleOnClick = () => {
-
     let { name, title, description, data } = this.state; //object destructing
-    let obj = { name, title, description }
+    let obj = { name, title, description };
 
-
-
-    var url = 'http://localhost:8000/getIdea'
+    var url = "http://localhost:8000/getIdea";
 
     fetch(url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(obj), // body data type must match "Content-Type" header
-    }).then((response) => {
-      return response.json()
-    }).then((response) => {
+      body: JSON.stringify(obj) // body data type must match "Content-Type" header
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        if (response.status == 200) {
+          console.log("data fethed", response.data);
 
-      if (response.status == 200) {
-        console.log('data fethed', response.data);
-       
-        this.setState({ ideas: response.data })
+          this.setState({ ideas: response.data });
+        } else if (response.status == 204) {
+          console.log("unable to fetch", response.data);
+          alert("unable to fetch");
+        } else {
+          // when error
 
-
-
-      }
-
-      else if (response.status == 204) {
-
-        console.log('unable to fetch', response.data)
-        alert("unable to fetch");
-
-      }
-
-      else { // when error
-
-        console.log('login fail: ', response.error)
-        alert(response.error.code)
-
-      }
-      // alert('Record has been insert successfully')
-    }).catch((err) => {
-      console.log('Error occured', err)
-      alert(err)
-    }) // parses response to JSON
-
-
-
-
+          console.log("login fail: ", response.error);
+          alert(response.error.code);
+        }
+        // alert('Record has been insert successfully')
+      })
+      .catch(err => {
+        console.log("Error occured", err);
+        alert(err);
+      }); // parses response to JSON
   };
 
   render() {
     const { classes } = this.props;
+    const { spacing } = this.state;
     //console.log(this.state.data);
 
     return (
       <div>
-        {
-          this.state.ideas && this.state.ideas.length && this.state.ideas.map(idea => {
+        {this.state.ideas &&
+          this.state.ideas.length &&
+          this.state.ideas.map(idea => {
             return (
-              <div>
-                <Card className={classes.card}>
-                  <h2 align="center">{idea.idea_title}</h2>
-                  <CardContent>
-                    <div className={classes.description}><p><font size="5" face="Arial" >{idea.description}</font></p></div>
-                    <div className={classes.ideaby}><h4 align="right">Idea by : {idea.user_name}</h4></div>
-                  </CardContent>
-                </Card>
-              </div>
-            )
-          })
-        }
-
+              <Grid container className={classes.root} spacing={16}>
+                <Grid item xs-12>
+                  <Grid
+                    container
+                    className={classes.demo}
+                    justify="center"
+                    spacing={Number(spacing)}
+                  >
+                    {[0, 1, 2, 3].map(value => (
+                      <Grid key={value} item>
+                        <Card
+                          className={classes.card}
+                          style={{ backgroundColor: "#e3f2fd" }}
+                        >
+                          <h2 className={classes.style}>{idea.idea_title}</h2>
+                          <CardContent>
+                            <TextField
+                              id="outlined-multiline-flexible"
+                              multiline
+                              rowsMax="4"
+                              value={idea.description}
+                              className={classes.textField}
+                              style={{
+                                font: "small-caps bold 24px/1 sans-serif",
+                                textAlign: "center"
+                              }}
+                              margin="normal"
+                              fullWidth
+                            />
+                            <div className={classes.ideaby}>
+                              <h4
+                                style={{
+                                  font: "small-caps bold 24px/1 sans-serif",
+                                  textAlign: "right"
+                                }}
+                              >
+                                Idea by : {idea.user_name}
+                              </h4>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Grid>
+              </Grid>
+            );
+          })}
       </div>
     );
   }
@@ -184,4 +249,3 @@ MediaCard.propTypes = {
 };
 
 export default withStyles(styles)(MediaCard);
-

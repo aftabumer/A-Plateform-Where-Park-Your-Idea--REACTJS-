@@ -1,15 +1,22 @@
 import React, { Component } from "react";
 import ParkIdea from "./Components/material-ui/ParkIdea";
-import SignIn from "./Components/material-ui/SignIn";
 import SignUp from "./Components/material-ui/SignUp";
 import Header from "./Components/material-ui/Header";
 import Idea from "./Components/material-ui/Idea"
+import View from "./Components/material-ui/View"
+
 
 
 // using ES6 modules
 import { BrowserRouter, Route } from "react-router-dom";
 import  Modal from "./Components/material-ui/Modal";
 import MyIdeas from "./Components/material-ui/MyIdeas";
+
+import SignIn from "./Components/material-ui/SignIn";
+
+import xSignIn from "./Components/material-ui/xSignIn";
+
+
 // // using CommonJS modules
 // var Router = require("react-router").Router;
 // var Route = require("react-router").Route;
@@ -41,6 +48,8 @@ class App extends Component {
       <Route exact path='/ParkIdea' component={ParkIdea} />
       <Route exact path='/Idea' component={Idea} />
       <Route exact path='/MyIdeas' component={MyIdeas} />
+      <Route exact path='/view' component={View} />
+
 
         {/* <SignIn />
         <SignUp /> */}    
@@ -49,8 +58,8 @@ class App extends Component {
 
 {/* <Modal />  */}
 
+<xSignIn />
         </BrowserRouter>
-
       </div>
     );
   }

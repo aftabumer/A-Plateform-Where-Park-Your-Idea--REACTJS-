@@ -24,10 +24,11 @@ const styles = theme => ({
   paper: {
     position: "absolute",
     // width: theme.spacing.unit * 50,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#e3f2fd',
     boxShadow: theme.shadows[8],
     // padding: theme.spacing.unit * 4,
     outline: "none"
+    
   },
   button: {
     margin: theme.spacing.unit,
@@ -64,8 +65,9 @@ class SimpleModal extends React.Component {
           // onClose={this.handleClose}
         >
        
-          <div style={getModalStyle()} className={classes.paper}>
+          <div style={getModalStyle()} className={classes.paper} >
             {/* <SimpleModalWrapped /> */}
+            <p style={{font: 'small-caps bold 24px/1 sans-serif', textAlign:'center'}}>You are here to ?</p>
               <Button
                 variant="contained"
                 color="primary"

@@ -1,79 +1,60 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  withStyles,
-  MuiThemeProvider,
-  createMuiTheme
-} from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControl from "@material-ui/core/FormControl";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import purple from "@material-ui/core/colors/purple";
-import { withRouter } from 'react-router-dom';
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-// import purple from '@material-ui/core/colors/purple';
-// import Form from "./Form";
-
+import { withRouter } from "react-router-dom";
 const styles = theme => ({
-  card: {
-    margin: "0 auto",
-    marginTop: "7%",
-    marginBottom: "7%",
-    padding: "5px 10px",
-    maxWidth: "50%",
-    color: "purple"
+  main: {
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: 400,
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
   },
-
-  button: {
-    margin: theme.spacing.unit
-  },
-  input: {
-    display: "none"
-  },
-  root: {
+  paper: {
+    marginTop: theme.spacing.unit * 8,
     display: "flex",
-    flexWrap: "wrap"
-    // width: "100%",
-    // maxWidth: 360,
-    // // backgroundColor: theme.palette.background.paper
-    // backgroundColor: 'pink'
-  },
-  list: {
-    maxWidth: "auto",
-    // backgroundColor: theme.palette.background.paper
-    backgroundColor: "pink"
-  },
-  margin: {
-    margin: theme.spacing.unit
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
-  },
-  inline: {
-    display: "inline"
+    flexDirection: "column",
+    alignItems: "center",
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`
   },
   avatar: {
-    margin: 10
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main
   },
-  textField: {
-    flexBasis: 200
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing.unit
+  },
+  submit: {
+    marginTop: theme.spacing.unit * 3
+  },
+  button: {
+    marginTop: "5px"
   }
 });
+
 const theme = createMuiTheme({
   palette: {
     primary: purple
   }
 });
 
-class MediaCard extends Component {
+class SignUp extends Component {
   state = {
     f_name: "",
     l_name: "",
@@ -117,68 +98,87 @@ class MediaCard extends Component {
     this.props.history.push(path);
   };
 
-  handleOnClick = (e) => {
-    let { f_name, l_name, email, password,c_password,data } = this.state; //object destructing
-    let obj = { f_name, l_name, email, password,c_password};
+  handleOnClick = e => {
+    let { f_name, l_name, email, password, c_password, data } = this.state; //object destructing
+    let obj = { f_name, l_name, email, password, c_password };
     data.push(obj);
     this.setState({ data });
 
-    if(this.state.password != this.state.c_password){
-      alert("Passwords don't match");
+    if (f_name !== "" && l_name !== "" &&  email !== "" && password !== "" && c_password !== "") {
+      data.push(obj);
+      this.setState({
+        data,
+        f_name: "",
+        l_name: "",
+        email: "",
+        password: "",
+        c_password: "",
+      });
+    } else {
+      alert("plz fill the field");
     }
-    else{
-    var url = 'http://localhost:8000/signup'
-    console.log(obj);
-    fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(obj) // body data type must match "Content-Type" header
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(response => {
-        if (response.status == 200) {
-          console.log("record has been insert succuss", response.data);
-          alert("you have successfuly signed up");
-          this.goto('/SignIn')
-          //   window.location.href="/index.html";
-        } else {
-          // when error
-          console.log("record is not inserted Error: ", response.error);
 
-          if (response.error.code == "ER_DUP_ENTRY") {
-            alert("This email id is alredy resgisterd");
-          }
-        }
-        // alert('Record has been insert successfully')
+
+    if (this.state.password != this.state.c_password) {
+      alert("Passwords don't match");
+    } else {
+      var url = "http://localhost:8000/signup";
+      console.log(obj);
+      fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj) // body data type must match "Content-Type" header
       })
-      .catch(err => {
-        console.log("Error occured in insertion", err);
-        // alert('Error in insertion')
-      }); // parses response to JSON
-      
-  }
-  }
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          if (response.status == 200) {
+            console.log("record has been insert succuss", response.data);
+            alert("you have successfuly signed up");
+            this.goto("/SignIn");
+            //   window.location.href="/index.html";
+          } else {
+            // when error
+            console.log("record is not inserted Error: ", response.error);
+
+            if (response.error.code == "ER_DUP_ENTRY") {
+              alert("This email id is alredy resgisterd");
+            }
+          }
+          // alert('Record has been insert successfully')
+        })
+        .catch(err => {
+          console.log("Error occured in insertion", err);
+          // alert('Error in insertion')
+        }); // parses response to JSON
+    }
+    this.goto("/SignIn")
+  };
 
   render() {
     const { classes } = this.props;
 
     return (
-      <div>
-        <Card className={classes.card}>
-          <h2>Sign Up</h2>
-
-          <CardContent>
-            {/* <Form /> */}
-            <div className={classes.root}>
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper} style={{backgroundColor:'#e3f2fd'}}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
+          <form className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
               <MuiThemeProvider theme={theme}>
                 <TextField
                   className={classes.margin}
                   label="First Name"
-                  name="name"
+                  name="First Name"
+                  autoComplete="First Name"
                   value={this.state.f_name}
                   onChange={this.handleF_nameChange}
                   placeholder="First Name"
@@ -188,11 +188,14 @@ class MediaCard extends Component {
                   type="First Name"
                 />
               </MuiThemeProvider>{" "}
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
               <MuiThemeProvider theme={theme}>
                 <TextField
                   className={classes.margin}
                   label="Last Name"
-                  name="name"
+                  name="Last Name"
+                  autoComplete="Last Name"
                   value={this.state.l_name}
                   onChange={this.handleL_nameChange}
                   placeholder="Last Name"
@@ -202,11 +205,15 @@ class MediaCard extends Component {
                   type="Last Name"
                 />
               </MuiThemeProvider>
+            </FormControl>
+
+            <FormControl margin="normal" required fullWidth>
               <MuiThemeProvider theme={theme}>
                 <TextField
                   className={classes.margin}
                   label="Email"
-                  name="name"
+                  name="Email"
+                  autoComplete="Email"
                   value={this.state.email}
                   onChange={this.handleEmailChange}
                   placeholder="Email"
@@ -216,11 +223,15 @@ class MediaCard extends Component {
                   type="email"
                 />
               </MuiThemeProvider>
+            </FormControl>
+
+            <FormControl margin="normal" required fullWidth>
               <MuiThemeProvider theme={theme}>
                 <TextField
                   className={classes.margin}
                   label="Password"
-                  name="name"
+                  name="Password"
+                  autoComplete="current-password"
                   value={this.state.password}
                   onChange={this.handlePasswordChange}
                   placeholder="Password"
@@ -230,11 +241,15 @@ class MediaCard extends Component {
                   type="password"
                 />
               </MuiThemeProvider>
+            </FormControl>
+
+            <FormControl margin="normal" required fullWidth>
               <MuiThemeProvider theme={theme}>
                 <TextField
                   className={classes.margin}
                   label="Confirm Password"
-                  name="name"
+                  name="Confirm Password"
+                  autoComplete="current-password"
                   value={this.state.c_password}
                   onChange={this.handleC_passwordChange}
                   placeholder="Confirm Password"
@@ -244,26 +259,27 @@ class MediaCard extends Component {
                   type="password"
                 />
               </MuiThemeProvider>
-            </div>
-          </CardContent>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button} 
-            onClick={this.handleOnClick}
-          >
-            Sign Up
-          </Button>
-        </Card>
-        }
-      </div>
+            </FormControl>
+
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth={true}
+              className={classes.button}
+              // onClick={() => this.goto("/SignIn")}
+              onClick={this.handleOnClick}
+            >
+              Sign Up
+            </Button>
+          </form>
+        </Paper>
+      </main>
     );
   }
 }
 
-
-MediaCard.propTypes = {
+SignUp.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default (withRouter(withStyles(styles)(MediaCard)));
+export default withRouter(withStyles(styles)(SignUp));
