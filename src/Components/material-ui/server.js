@@ -90,7 +90,7 @@ app.post('/getIdea', (req, res) => {
 
 
     //  var sql = 'SELECT * FROM customers WHERE address = ' + mysql.escape(adr);
-    var sql = 'SELECT * FROM  idea';
+    var sql = 'SELECT * FROM  idea ORDER BY idea_id desc';
     //  var sql ='SELECT * FROM signup WHERE email_id = ? and password= ?';
 
     connection.query(sql, (err, result) => {
@@ -113,5 +113,85 @@ app.post('/getIdea', (req, res) => {
 
     });
 })
+
+
+app.post('/getProfile', (req, res) => {
+    let {
+        user_id 
+              } = req.body
+
+    //  var sql = 'SELECT * FROM customers WHERE address = ' + mysql.escape(adr);
+    var sql = 'SELECT * FROM signup WHERE user_id = ' + mysql.escape(user_id);
+    //  var sql ='SELECT * FROM signup WHERE email_id = ? and password= ?';
+
+    connection.query(sql, [user_id], (err, result) => {
+        if (err) {
+            console.log('Errrrrrrrrrrrrrrrrrrrrrrrrrr', err)
+            res.status(500).send(JSON.stringify({ error: err, status: 500 }))
+        }
+        else {
+            if (result.length > 0) {
+                console.log("data fetched");
+                res.status(200).send({ data: result[0], status: 200 })
+            }
+            else {
+
+                console.log("unable to fetch");
+                res.status(500).send({ error: 'email and pass dont match', status: 204 })
+                //res.status(204).send({ data: req.body, status: 204 })
+            }
+        }
+
+    });
+})
+
+app.post('/updateProfile', (req, res) => {
+
+    let {user_id,f_name, l_name, email, password} = req.body
+
+    //UPDATE signup SET f_name="Dpak",l_name="yes" WHERE User_id=1
+
+    
+    var sql = 'UPDATE signup SET f_name =' + mysql.escape(f_name) + ', l_name = ' + mysql.escape(l_name) + ', email = ' + mysql.escape(email) + ', password = ' + mysql.escape(password)
+    'WHERE user_id =' + mysql.escape(user_id);
+   
+    
+
+    connection.query(sql,[f_name][l_name][email][password][user_id],(err, result) => {
+        if (err) {
+            console.log('Errrrrrrrrrrrrrrrrrrrrrrrrrr', err)
+            res.status(500).send(JSON.stringify({ error: err, status: 500 }))
+        } else {
+            console.log("profile edited");
+            res.status(200).send({ data: req.body, status: 200 })
+        }
+    });
+})
+
+
+app.post('/deleteIdea', (req, res) => {
+
+    let {
+        idea_id
+        } = req.body
+              
+
+    //  var sql = 'SELECT * FROM customers WHERE address = ' + mysql.escape(adr);
+    var sql = 'DELETE from idea where idea_id ='+ mysql.escape(idea_id);
+    //  var sql ='SELECT * FROM signup WHERE email_id = ? and password= ?';
+
+    connection.query(sql, [idea_id], (err, result) => {
+        if (err) {
+            console.log('Errrrrrrrrrrrrrrrrrrrrrrrrrr', err)
+            res.status(500).send(JSON.stringify({ error: err, status: 500 }))
+        }
+        else {
+            console.log("idea deleted");
+            res.status(200).send({ data: req.body, status: 200 })
+        }
+
+    });
+})
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

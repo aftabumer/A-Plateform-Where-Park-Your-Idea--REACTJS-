@@ -3,7 +3,7 @@ import ParkIdea from "./Components/material-ui/ParkIdea";
 import SignUp from "./Components/material-ui/SignUp";
 import Header from "./Components/material-ui/Header";
 import Idea from "./Components/material-ui/Idea"
-import View from "./Components/material-ui/View"
+// import View from "./Components/material-ui/View"
 
 
 
@@ -14,7 +14,7 @@ import MyIdeas from "./Components/material-ui/MyIdeas";
 
 import SignIn from "./Components/material-ui/SignIn";
 
-import xSignIn from "./Components/material-ui/xSignIn";
+// import xSignIn from "./Components/material-ui/xSignIn";
 
 
 // // using CommonJS modules
@@ -46,9 +46,10 @@ class App extends Component {
       <Route exact path='/SignIn' component={SignIn} />
       <Route exact path='/SignUp' component={SignUp} />
       <Route exact path='/ParkIdea' component={ParkIdea} />
+      <Route exact path='/' component={Idea} />
       <Route exact path='/Idea' component={Idea} />
       <Route exact path='/MyIdeas' component={MyIdeas} />
-      <Route exact path='/view' component={View} />
+      {/* <Route exact path='/view' component={View} /> */}
 
 
         {/* <SignIn />
@@ -58,7 +59,7 @@ class App extends Component {
 
 {/* <Modal />  */}
 
-<xSignIn />
+{/* <xSignIn /> */}
         </BrowserRouter>
       </div>
     );

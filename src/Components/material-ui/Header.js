@@ -56,7 +56,6 @@ const styles = {
 };
 
 
-var userName = window.localStorage.getItem("f_name");
 
 class ButtonAppBar extends Component {
   state = {
@@ -66,6 +65,8 @@ class ButtonAppBar extends Component {
   componentWillMount() {
     setInterval(() => {
       var isSignIn = JSON.parse(window.localStorage.getItem("isSignIn"));
+var userName = window.localStorage.getItem("f_name");
+
 
       this.setState({
         isSignIn,

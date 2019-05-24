@@ -109,8 +109,9 @@ const styles = theme => ({
     width: 200
   },
   paper: {
-    height: 140,
-    width: 100
+    adding: theme.spacing.unit * 2,
+    textAlign: "center",
+    color: theme.palette.text.secondary
   },
   control: {
     padding: theme.spacing.unit * 2
@@ -186,59 +187,48 @@ class MediaCard extends Component {
     //console.log(this.state.data);
 
     return (
-      <div>
-        {this.state.ideas &&
-          this.state.ideas.length &&
-          this.state.ideas.map(idea => {
-            return (
-              <Grid container className={classes.root} spacing={16}>
-                <Grid item xs-12>
-                  <Grid
-                    container
-                    className={classes.demo}
-                    justify="center"
-                    spacing={Number(spacing)}
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          {this.state.ideas &&
+            this.state.ideas.length &&
+            this.state.ideas.map(idea => {
+              return (
+                <Grid item xs={6}>
+                  <Card
+                    className={classes.card}
+                    style={{ backgroundColor: "#e3f2fd" }}
                   >
-                    {[0, 1, 2, 3].map(value => (
-                      <Grid key={value} item>
-                        <Card
-                          className={classes.card}
-                          style={{ backgroundColor: "#e3f2fd" }}
+                    <h2 className={classes.style}>{idea.idea_title}</h2>
+                    <CardContent>
+                      <TextField
+                        id="outlined-multiline-flexible"
+                        multiline
+                        rowsMax="4"
+                        value={idea.description}
+                        className={classes.textField}
+                        style={{
+                          font: "small-caps bold 24px/1 sans-serif",
+                          textAlign: "center"
+                        }}
+                        margin="normal"
+                        fullWidth
+                      />
+                      <div className={classes.ideaby}>
+                        <h4
+                          style={{
+                            font: "small-caps bold 24px/1 sans-serif",
+                            textAlign: "right"
+                          }}
                         >
-                          <h2 className={classes.style}>{idea.idea_title}</h2>
-                          <CardContent>
-                            <TextField
-                              id="outlined-multiline-flexible"
-                              multiline
-                              rowsMax="4"
-                              value={idea.description}
-                              className={classes.textField}
-                              style={{
-                                font: "small-caps bold 24px/1 sans-serif",
-                                textAlign: "center"
-                              }}
-                              margin="normal"
-                              fullWidth
-                            />
-                            <div className={classes.ideaby}>
-                              <h4
-                                style={{
-                                  font: "small-caps bold 24px/1 sans-serif",
-                                  textAlign: "right"
-                                }}
-                              >
-                                Idea by : {idea.user_name}
-                              </h4>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </Grid>
+                          Idea by : {idea.user_name}
+                        </h4>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })}
+        </Grid>
       </div>
     );
   }
