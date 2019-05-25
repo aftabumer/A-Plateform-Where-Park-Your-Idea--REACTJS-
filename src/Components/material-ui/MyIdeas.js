@@ -279,7 +279,7 @@ class MediaCard extends Component {
                       value={idea.description}
                       className={classes.textField}
                       style={{
-                        font: "small-caps bold 24px/1 sans-serif",
+                        font: "small bold 24px/1 sans-serif",
                         textAlign: "center"
                       }}
                       margin="normal"
@@ -303,17 +303,6 @@ class MediaCard extends Component {
                   <List className={classes.list} container justify="center">
                     <ListItem alignItems="flex-center">
                       <ListItemText
-                        primary={
-                          idea.editStatus ? (
-                            <input
-                              name="user_name"
-                              value={this.state.user_name}
-                              onChange={this.handleOnChange}
-                            />
-                          ) : (
-                            idea.name
-                          )
-                        }
                         secondary={
                           <React.Fragment>
                             <Typography
@@ -322,21 +311,31 @@ class MediaCard extends Component {
                               color="textPrimary"
                             >
                               {idea.editStatus ? (
-                                <input
+                                <TextField
+                                id="standard-name"
+                                label="Title"
+                                className={classes.textField}
                                   name="idea_title"
                                   value={this.state.idea_title}
                                   onChange={this.handleOnChange}
+                                  margin="normal"
                                 />
                               ) : (
                                 ''
                               )}
                             </Typography>
-                            <br />
+                           
                             {idea.editStatus ? (
-                              <input
+                              <TextField
+                              id="standard-multiline-flexible"
+                              label="Description"
+                              multiline
+                              rowsMax="4"
                                 name="e_description"
                                 value={this.state.e_description}
                                 onChange={this.handleOnChange}
+                                className={classes.textField}
+                                margin="normal"
                               />
                             ) : (
                               ''
