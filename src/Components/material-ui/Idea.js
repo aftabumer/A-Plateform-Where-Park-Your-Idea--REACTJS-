@@ -207,7 +207,7 @@ class MediaCard extends Component {
                         value={idea.description}
                         className={classes.textField}
                         style={{
-                          font: "small-caps bold 24px/1 sans-serif",
+                          font: "small bold 24px/1 sans-serif",
                           textAlign: "center"
                         }}
                         margin="normal"

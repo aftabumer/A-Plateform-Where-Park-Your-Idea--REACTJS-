@@ -12,11 +12,13 @@ import { withRouter } from 'react-router-dom';
 function getModalStyle() {
   const top = 50;
   const left = 50;
+  
 
   return {
     top: `${top}%`,
     left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
+    transform: `translate(-${top}%, -${left}%)`,
+    
   };
 }
 
@@ -24,10 +26,11 @@ const styles = theme => ({
   paper: {
     position: "absolute",
     // width: theme.spacing.unit * 50,
-    backgroundColor: '#e3f2fd',
+    backgroundColor: '#e1bee7',
     boxShadow: theme.shadows[8],
     // padding: theme.spacing.unit * 4,
-    outline: "none"
+    outline: "none",
+    
     
   },
   button: {
@@ -62,6 +65,8 @@ class SimpleModal extends React.Component {
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           open={this.state.open}
+          
+          
           // onClose={this.handleClose}
         >
        
