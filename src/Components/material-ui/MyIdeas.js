@@ -20,6 +20,7 @@ import Grid from "@material-ui/core/Grid";
 import classNames from "classnames";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputBase from "@material-ui/core/InputBase";
+import Search from "./Search";
 // import purple from '@material-ui/core/colors/purple';
 // import Form from "./Form";
 
@@ -59,7 +60,7 @@ const styles = theme => ({
   root: {
     display: "inline",
     flexWrap: "wrap",
-    flexGrow: 1,
+    flexGrow: 1
     // width: "100%",
     // maxWidth: 360,
     // // backgroundColor: theme.palette.background.paper
@@ -183,73 +184,105 @@ class MediaCard extends Component {
     this.setState({ ideas });
   };
 
-  handleSave = index => {
-    let ideas = this.state.ideas.map((item, i) =>{
-      const {e_name, idea_title, e_description} = this.state
-      debugger
-      return i === index
-        ? {
-            ...item,
-            editStatus: false,
-            name: e_name,
-            idea_title: idea_title,
-            title: idea_title,
-            description: e_description
-          }
-        : item
-        });
-    debugger
-    this.setState({ ideas });
-  };
+  handleSave = (index, idea) => {
+    var idea_id = idea.idea_id;
+    var description = this.state.e_description;
+    var idea_title = this.state.idea_title;
 
-  handleOnDelete = (idea,index) => {
+    let obj = {
+      idea_id,
+      idea_title,
+      description
+    };
 
-
-
-    var idea_id=idea.idea_id
-    var idea_title=idea.idea_title
-    var url = 'http://localhost:8000/deleteIdea'
- 
-    
-    let obj={
-        idea_id
-    }
- 
+    var url = "http://localhost:8000/updatedIdea";
+    console.log(obj);
     fetch(url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(obj), // body data type must match "Content-Type" header
- 
-    }).then((response) => {
- 
-      return response.json()
-    }).then((response) => {
-      if (response.status === 200) {
-        console.log('idea deleted', response.data)
-        alert(idea_title+" deleted succesfully");
-        //   window.location.href="/index.html";
-        let ideas = this.state.ideas;
-        ideas.splice(index, 1);
-        this.setState({
-          ideas: ideas
-        });
-      }
-      else { // when error
-        console.log('record is not inserted Error: ', response.error)
- 
-        alert("unable to delete");
-      
- 
-      }
-      // alert('Record has been insert successfully')
-    }).catch((err) => {
-      console.log('Error occured in deletion', err)
-       alert(err)
-    }) // parses response to JSON  
- 
- 
+      body: JSON.stringify(obj) // body data type must match "Content-Type" header
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        if (response.status == 200) {
+          console.log("idea has been updated successfuly", response.data);
+          alert("you have successfuly updated your idea");
+
+          let ideas = this.state.ideas.map((item, i) => {
+            const { e_name, idea_title, e_description } = this.state;
+            
+            return i === index
+              ? {
+                  ...item,
+                  editStatus: false,
+                  name: e_name,
+                  idea_title: idea_title,
+                  title: idea_title,
+                  description: e_description
+                }
+              : item;
+
+          });
+
+          this.setState({ ideas });
+
+          //   window.location.href="/index.html";
+        } else {
+          // when error
+          console.log("faile to update idea: ", response.error);
+        }
+        // alert('Record has been insert successfully')
+      })
+      .catch(err => {
+        console.log("Error occured in insertion", err);
+        alert(err);
+      }); // parses response to JSON
+  };
+  handleOnDelete = (idea, index) => {
+    var idea_id = idea.idea_id;
+    var idea_title = idea.idea_title;
+    var url = "http://localhost:8000/deleteIdea";
+
+    let obj = {
+      idea_id
+    };
+
+    fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(obj) // body data type must match "Content-Type" header
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        if (response.status === 200) {
+          console.log("idea deleted", response.data);
+          alert(idea_title + " deleted succesfully");
+          //   window.location.href="/index.html";
+          let ideas = this.state.ideas;
+          ideas.splice(index, 1);
+          this.setState({
+            ideas: ideas
+          });
+        } else {
+          // when error
+          console.log("record is not inserted Error: ", response.error);
+
+          alert("unable to delete");
+        }
+        // alert('Record has been insert successfully')
+      })
+      .catch(err => {
+        console.log("Error occured in deletion", err);
+        alert(err);
+      }); // parses response to JSON
   };
 
   render() {
@@ -258,121 +291,121 @@ class MediaCard extends Component {
 
     return (
       <div className={classes.root}>
+        
         <Grid container spacing={3}>
-        {this.state.ideas &&
-          this.state.ideas.length &&
-          this.state.ideas.map((idea, i) => {
-            let idd = parseInt(localStorage.getItem("user_id"));
-            if (idd !== idea.user_id) return;
-            return (
-              <Grid item xs={6}>
-                <Card
-                  className={classes.card}
-                  style={{ backgroundColor: "#e3f2fd" }}
-                >
-                  <h2 className={classes.style}>{idea.idea_title}</h2>
-                  <CardContent>
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      multiline
-                      rowsMax="4"
-                      value={idea.description}
-                      className={classes.textField}
-                      style={{
-                        font: "small bold 24px/1 sans-serif",
-                        textAlign: "center"
-                      }}
-                      margin="normal"
-                      fullWidth
-                    />
-                    <div className={classes.ideaby}>
-                      <h4
+          {this.state.ideas &&
+            this.state.ideas.length &&
+            this.state.ideas.map((idea, i) => {
+              let idd = parseInt(localStorage.getItem("user_id"));
+              if (idd !== idea.user_id) return;
+              return (
+                <Grid item xs={6}>
+                  <Card
+                    className={classes.card}
+                    style={{ backgroundColor: "#e3f2fd" }}
+                  >
+                    <h2 className={classes.style}>{idea.idea_title}</h2>
+                    <CardContent>
+                      <TextField
+                        id="outlined-multiline-flexible"
+                        multiline
+                        rowsMax="4"
+                        value={idea.description}
+                        className={classes.textField}
                         style={{
-                          font: "small-caps bold 24px/1 sans-serif",
-                          textAlign: "right"
+                          font: "small bold 24px/1 sans-serif",
+                          textAlign: "center"
                         }}
-                      >
-                        Idea by : {idea.user_name}
-                      </h4>
-                    </div>
-                  </CardContent>
+                        margin="normal"
+                        fullWidth
+                      />
+                      <div className={classes.ideaby}>
+                        <h4
+                          style={{
+                            font: "small-caps bold 24px/1 sans-serif",
+                            textAlign: "right"
+                          }}
+                        >
+                          Idea by : {idea.user_name}
+                        </h4>
+                      </div>
+                    </CardContent>
 
-                  {/* <p>{idea.user_name}</p>
+                    {/* <p>{idea.user_name}</p>
               <p>{idea.idea_title}</p>
               <p>{idea.description}</p> */}
-                  <List className={classes.list} container justify="center">
-                    <ListItem alignItems="flex-center">
-                      <ListItemText
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="span"
-                              className={classes.inline}
-                              color="textPrimary"
-                            >
+                    <List className={classes.list} container justify="center">
+                      <ListItem alignItems="flex-center">
+                        <ListItemText
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="span"
+                                className={classes.inline}
+                                color="textPrimary"
+                              >
+                                {idea.editStatus ? (
+                                  <TextField
+                                    id="standard-name"
+                                    label="Title"
+                                    className={classes.textField}
+                                    name="idea_title"
+                                    value={this.state.idea_title}
+                                    onChange={this.handleOnChange}
+                                    margin="normal"
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </Typography>
+
                               {idea.editStatus ? (
                                 <TextField
-                                id="standard-name"
-                                label="Title"
-                                className={classes.textField}
-                                  name="idea_title"
-                                  value={this.state.idea_title}
+                                  id="standard-multiline-flexible"
+                                  label="Description"
+                                  multiline
+                                  rowsMax="4"
+                                  name="e_description"
+                                  value={this.state.e_description}
                                   onChange={this.handleOnChange}
+                                  className={classes.textField}
                                   margin="normal"
                                 />
                               ) : (
-                                ''
+                                ""
                               )}
-                            </Typography>
-                           
-                            {idea.editStatus ? (
-                              <TextField
-                              id="standard-multiline-flexible"
-                              label="Description"
-                              multiline
-                              rowsMax="4"
-                                name="e_description"
-                                value={this.state.e_description}
-                                onChange={this.handleOnChange}
-                                className={classes.textField}
-                                margin="normal"
-                              />
-                            ) : (
-                              ''
-                            )}
-                          </React.Fragment>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={
+                          idea.editStatus
+                            ? () => this.handleSave(i,idea)
+                            : () => this.handleEdit(i, idea)
                         }
-                      />
-                    </ListItem>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={
-                        idea.editStatus
-                          ? () => this.handleSave(i)
-                          : () => this.handleEdit(i)
-                      }
-                      size="small"
-                    >
-                      {idea.editStatus ? "Save" : "Edit"}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className={classes.button}
-                      size="small"
-                      onClick={()=>this.handleOnDelete(idea)}
-                    >
-                      Delete
-                    </Button>
-                  </List>
-                
-                </Card>
+                        size="small"
+                      >
+                        {idea.editStatus ? "Save" : "Edit"}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        size="small"
+                        onClick={() => this.handleOnDelete(idea)}
+                      >
+                        Delete
+                      </Button>
+                    </List>
+                  </Card>
                 </Grid>
-            );
-          })}
-          </Grid>
+              );
+            })}
+        </Grid>
       </div>
     );
   }

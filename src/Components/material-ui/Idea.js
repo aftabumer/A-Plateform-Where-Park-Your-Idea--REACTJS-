@@ -23,6 +23,7 @@ import InputBase from "@material-ui/core/InputBase";
 // import purple from '@material-ui/core/colors/purple';
 // import Form from "./Form";
 import Paper from "@material-ui/core/Paper";
+import Search from "./Search";
 
 const styles = theme => ({
   card: {
@@ -188,6 +189,7 @@ class MediaCard extends Component {
 
     return (
       <div className={classes.root}>
+        <Search />
         <Grid container spacing={3}>
           {this.state.ideas &&
             this.state.ideas.length &&

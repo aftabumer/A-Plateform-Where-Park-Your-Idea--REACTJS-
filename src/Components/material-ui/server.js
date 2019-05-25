@@ -193,5 +193,67 @@ app.post('/deleteIdea', (req, res) => {
     });
 })
 
+app.post('/searchIdea', (req, res) => {
+
+
+    let {
+        SearchKeyWord
+        } = req.body
+
+    //  var sql = 'SELECT * FROM customers WHERE address = ' + mysql.escape(adr);
+   
+    //
+  
+    //  var sql ='SELECT * FROM signup WHERE email_id = ? and password= ?';4
+    console.log('SearchKeyWord', SearchKeyWord)
+    connection.query(`SELECT * FROM idea where idea_title like '%${SearchKeyWord}%'` ,(err, result)=>{
+
+    //connection.query(sql,(err, result)=> {
+        if (err) {
+            console.log('Errrrrrrrrrrrrrrrrrrrrrrrrrr', err)
+            res.status(500).send(JSON.stringify({ error: err, status: 500 }))
+        }
+        else {
+            if (result.length > 0) {
+                console.log("idea fetch success");
+                res.status(200).send({ data: result, status: 200 })
+                //console.log(result)
+            }
+            else {
+                console.log("unable to fetch ideas");
+                res.status(200).send({ error: 'no idea found', status: 204 })
+                //res.status(204).send({ data: req.body, status: 204 })
+            }
+        }
+
+    });
+})
+
+
+app.post('/updatedIdea', (req, res) => {
+
+    let {idea_id,
+        idea_title,
+        description} = req.body
+
+    //UPDATE signup SET f_name="Dpak",l_name="yes" WHERE User_id=1
+
+    //UPDATE idea SET idea_title ="soban" , description ="waraich" WHERE idea_id =42
+
+  //  var sql = 'UPDATE idea SET idea_title =' + mysql.escape(idea_title) + ', description =' + mysql.escape(description) + 'WHERE idea_id =' + mysql.escape(idea_id);
+   
+   // 'UPDATE collegeusers SET printCount = ? WHERE userid = ?', [printCount, userid]
+   //connection.query(sql,[idea_title][description][idea_id],(err, result)
+
+    connection.query('UPDATE idea SET idea_title = ?, description = ? WHERE idea_id = ?',[idea_title,description,idea_id],(err, result) => {
+        if (err) {
+            console.log('Errrrrrrrrrrrrrrrrrrrrrrrrrr', err)
+            res.status(500).send(JSON.stringify({ error: err, status: 500 }))
+        } else {
+            console.log("idea updated");
+            res.status(200).send({ data: req.body, status: 200 })
+        }
+    });
+})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
