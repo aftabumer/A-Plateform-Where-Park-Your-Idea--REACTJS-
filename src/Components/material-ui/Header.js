@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-import purple from '@material-ui/core/colors/purple';
+import purple from "@material-ui/core/colors/purple";
 import Modal from "./Modal";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -18,15 +18,12 @@ import red from "@material-ui/core/colors/red";
 
 import { withRouter } from "react-router-dom";
 
-
-
-
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const styles = {
   root: {
     // flexGrow: 1,
-    backgroundColor : red,
+    backgroundColor: red
   },
   grow: {
     flexGrow: 1,
@@ -40,33 +37,29 @@ const styles = {
     // margin: '0px 0px 75px 0px',
     // position: "static",
     // backgroundColor : red,
-    
   },
   toolbarTitle: {
     flex: 1
   },
-  style:{
+  style: {
     // marginLeft:'40px',
-    textAlign: 'right',
+    textAlign: "right",
     // fontWeight:'500',
     // fontSize: "Helvetica Bold",
     // fontFamily: "Open Sans Regular"
-    font: 'small-caps bold 24px/1 sans-serif',
+    font: "small-caps bold 24px/1 sans-serif"
   }
 };
-
-
 
 class ButtonAppBar extends Component {
   state = {
     isSignIn: false
   };
-  
+
   componentWillMount() {
     setInterval(() => {
       var isSignIn = JSON.parse(window.localStorage.getItem("isSignIn"));
-var userName = window.localStorage.getItem("f_name");
-
+      var userName = window.localStorage.getItem("f_name");
 
       this.setState({
         isSignIn,
@@ -99,13 +92,18 @@ var userName = window.localStorage.getItem("f_name");
   handleOnMyIdeas = () => {
     this.goto("/MyIdeas");
   };
-  
+
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-
-        <AppBar position="static" style={{backgroundColor:'#6a1b9a',font: 'small-caps bold 24px/1 sans-serif'}}>
+        <AppBar
+          position="static"
+          style={{
+            backgroundColor: "#6a1b9a",
+            font: "small-caps bold 24px/1 sans-serif"
+          }}
+        >
           <Toolbar>
             <Typography
               variant="h5"
@@ -118,27 +116,56 @@ var userName = window.localStorage.getItem("f_name");
               Park Ideas
             </Typography>
             {!this.state.isSignIn ? (
-              <Button style={{font: 'small-caps bold 16px/1 sans-serif', textAlign: 'right'}} color="inherit" onClick={this.handleOnLogin}>
+              <Button
+                style={{
+                  font: "small-caps bold 16px/1 sans-serif",
+                  textAlign: "right"
+                }}
+                color="inherit"
+                onClick={this.handleOnLogin}
+              >
                 Login
               </Button>
             ) : (
               <div>
-                <Typography className={classes.style} color="inherit">Welcome {this.state.userName}</Typography>
+                <Typography className={classes.style} color="inherit">
+                  Welcome {this.state.userName}
+                </Typography>
 
-                <Button style={{font: 'small-caps bold 16px/1 sans-serif', textAlign: 'right'}} color="inherit" onClick={this.handleOnlogout}>
+                <Button
+                  style={{
+                    font: "small-caps bold 16px/1 sans-serif",
+                    textAlign: "right"
+                  }}
+                  color="inherit"
+                  onClick={this.handleOnlogout}
+                >
                   Logout
                 </Button>
-                <Button style={{font: 'small-caps bold 16px/1 sans-serif', textAlign: 'right'}} color="inherit" onClick={this.handleOnPostIdea}>
+                <Button
+                  style={{
+                    font: "small-caps bold 16px/1 sans-serif",
+                    textAlign: "right"
+                  }}
+                  color="inherit"
+                  onClick={this.handleOnPostIdea}
+                >
                   Park Idea
                 </Button>
-                <Button style={{font: 'small-caps bold 16px/1 sans-serif', textAlign: 'right'}} color="inherit" onClick={this.handleOnMyIdeas}>
+                <Button
+                  style={{
+                    font: "small-caps bold 16px/1 sans-serif",
+                    textAlign: "right"
+                  }}
+                  color="inherit"
+                  onClick={this.handleOnMyIdeas}
+                >
                   My Ideas
                 </Button>
               </div>
             )}
           </Toolbar>
         </AppBar>
-    
       </div>
     );
   }
